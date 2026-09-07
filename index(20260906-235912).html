@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Soobin Yoon — Ph.D. student in Aerospace Engineering and Mechanics at the University of Minnesota." />
+  <title>Soobin Yoon</title>
+
+  <style>
+    :root{
+      --bg:#f7f8fb;
+      --surface:#ffffff;
+      --surface-soft:#f0f4f8;
+      --text:#152033;
+      --muted:#68758a;
+      --line:#e3e8ef;
+      --accent:#315f86;
+      --accent-soft:#eaf2f8;
+      --max:1080px;
+      --radius:20px;
+      --shadow:0 16px 45px rgba(28,42,60,.07);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:
+        radial-gradient(circle at 88% 4%, rgba(49,95,134,.10), transparent 30rem),
+        var(--bg);
+      color:var(--text);
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      line-height:1.7;
+      -webkit-font-smoothing:antialiased;
+    }
+    a{color:inherit;text-underline-offset:3px}
+    .wrap{width:min(var(--max),calc(100% - 36px));margin:0 auto}
+
+    header{
+      position:sticky;top:0;z-index:50;
+      background:rgba(247,248,251,.88);
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid rgba(227,232,239,.95)
+    }
+    nav{
+      min-height:68px;
+      display:flex;align-items:center;justify-content:space-between;gap:24px
+    }
+    .brand{
+      font-size:18px;font-weight:850;letter-spacing:-.025em;text-decoration:none
+    }
+    .navlinks{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+    .navlinks a{
+      text-decoration:none;font-size:14px;font-weight:650;color:var(--muted)
+    }
+    .navlinks a:hover{color:var(--text)}
+
+    .hero{
+      display:grid;
+      grid-template-columns:1.25fr .75fr;
+      gap:56px;
+      align-items:center;
+      padding:92px 0 76px
+    }
+    .eyebrow{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:6px 10px;border-radius:999px;
+      background:var(--accent-soft);color:var(--accent);
+      font-size:13px;font-weight:800;
+      margin-bottom:18px
+    }
+    .eyebrow:before{
+      content:"";width:7px;height:7px;border-radius:50%;background:var(--accent)
+    }
+    h1{
+      margin:0;
+      font-size:clamp(52px,8vw,82px);
+      line-height:.98;
+      letter-spacing:-.055em
+    }
+    .subtitle{
+      margin:20px 0 0;
+      font-size:22px;
+      color:#3d4b5f;
+      font-weight:560
+    }
+    .summary{
+      max-width:760px;
+      margin:18px 0 0;
+      color:var(--muted);
+      font-size:16px
+    }
+    .buttons{
+      display:flex;gap:10px;flex-wrap:wrap;margin-top:28px
+    }
+    .btn{
+      display:inline-block;
+      padding:11px 15px;
+      border-radius:11px;
+      border:1px solid var(--line);
+      background:var(--surface);
+      text-decoration:none;
+      font-size:14px;
+      font-weight:760;
+      transition:.18s ease
+    }
+    .btn.primary{
+      background:var(--text);border-color:var(--text);color:white
+    }
+    .btn:hover{transform:translateY(-1px)}
+
+    .identity{
+      background:rgba(255,255,255,.9);
+      border:1px solid var(--line);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+      padding:28px
+    }
+    .avatar{
+      width:138px;height:138px;border-radius:50%;
+      display:grid;place-items:center;
+      background:linear-gradient(145deg,#d9e7f2,#f6f9fb);
+      color:var(--accent);
+      border:1px solid #d6e2ec;
+      font-size:43px;font-weight:900;letter-spacing:-.045em;
+      margin-bottom:20px
+    }
+    .identity strong{display:block;font-size:20px}
+    .identity p{margin:5px 0;color:var(--muted);font-size:14px}
+    .identity .divider{
+      border-top:1px solid var(--line);margin:18px 0
+    }
+    .identity .small{
+      font-size:13px;color:#758297
+    }
+
+    section{
+      padding:64px 0;
+      border-top:1px solid var(--line)
+    }
+    .section-layout{
+      display:grid;
+      grid-template-columns:220px 1fr;
+      gap:42px;
+      align-items:start
+    }
+    h2{
+      margin:0;
+      font-size:28px;
+      letter-spacing:-.035em
+    }
+    .side-note{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size:13px
+    }
+    .body-copy p:first-child{margin-top:0}
+    .body-copy p{color:#445267}
+
+    .focus-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:15px
+    }
+    .focus-card{
+      background:var(--surface);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:21px;
+      min-height:150px
+    }
+    .focus-card .label{
+      color:var(--accent);
+      font-size:12px;
+      font-weight:850;
+      text-transform:uppercase;
+      letter-spacing:.07em
+    }
+    .focus-card h3{
+      margin:11px 0 7px;
+      font-size:18px;
+      letter-spacing:-.02em
+    }
+    .focus-card p{
+      margin:0;color:var(--muted);font-size:14px
+    }
+
+    .news{display:flex;flex-direction:column}
+    .news-item{
+      display:grid;
+      grid-template-columns:110px 1fr;
+      gap:20px;
+      padding:14px 0;
+      border-bottom:1px solid var(--line)
+    }
+    .news-item:last-child{border-bottom:0}
+    .news-date{
+      color:var(--accent);font-size:13px;font-weight:850
+    }
+    .news-item p{
+      margin:0;color:#455368
+    }
+
+    .research-list{display:flex;flex-direction:column;gap:15px}
+    .research{
+      display:grid;
+      grid-template-columns:54px 1fr;
+      gap:20px;
+      background:var(--surface);
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:22px
+    }
+    .research-index{
+      width:44px;height:44px;border-radius:14px;
+      display:grid;place-items:center;
+      background:var(--accent-soft);
+      color:var(--accent);
+      font-size:13px;font-weight:900
+    }
+    .research h3{
+      margin:0 0 7px;
+      font-size:18px;letter-spacing:-.02em
+    }
+    .research p{
+      margin:0;color:var(--muted);font-size:14px
+    }
+    .research .meta{
+      margin-top:10px;
+      color:#52637a;
+      font-size:13px;
+      font-weight:700
+    }
+
+    .pub{
+      background:linear-gradient(180deg,#fff,#fbfdff);
+      border:1px solid #dce4ec;
+      border-left:4px solid var(--accent);
+      border-radius:18px;
+      padding:22px 22px 22px 24px;
+      margin-bottom:14px
+    }
+    .tag{
+      display:inline-block;
+      padding:4px 8px;
+      border-radius:999px;
+      background:var(--accent-soft);
+      color:var(--accent);
+      font-size:11px;
+      font-weight:850;
+      margin-bottom:10px
+    }
+    .pub h3{
+      margin:0 0 7px;
+      font-size:18px;line-height:1.45;letter-spacing:-.02em
+    }
+    .pub p{
+      margin:4px 0;color:#536176;font-size:14px
+    }
+    .venue{font-weight:780;color:#28364a!important}
+
+    .timeline{display:flex;flex-direction:column;gap:13px}
+    .timeline-row{
+      display:grid;
+      grid-template-columns:165px 1fr;
+      gap:22px;
+      background:var(--surface);
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:18px 19px
+    }
+    .date{font-size:13px;font-weight:820;color:var(--muted)}
+    .timeline-row h3{margin:0;font-size:16px}
+    .timeline-row p{margin:4px 0 0;color:var(--muted);font-size:14px}
+
+    .award-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:14px
+    }
+    .award{
+      background:var(--surface);
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:18px
+    }
+    .award strong{display:block;margin-bottom:4px}
+    .award span{font-size:14px;color:var(--muted)}
+
+    .skills{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:14px
+    }
+    .skillbox{
+      background:var(--surface);
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:18px
+    }
+    .skillbox strong{display:block;margin-bottom:10px}
+    .pills{display:flex;gap:7px;flex-wrap:wrap}
+    .pill{
+      padding:6px 9px;
+      border-radius:999px;
+      background:var(--accent-soft);
+      color:#496984;
+      font-size:12px;font-weight:760
+    }
+
+    .future{
+      padding:22px;
+      border-radius:18px;
+      border:1px dashed #cbd6e0;
+      background:rgba(255,255,255,.58)
+    }
+    .future h3{margin:0 0 8px;font-size:17px}
+    .future p{margin:0;color:var(--muted);font-size:14px}
+
+    .contact-card{
+      display:flex;align-items:center;justify-content:space-between;gap:24px;
+      padding:30px;
+      border-radius:24px;
+      background:var(--text);
+      color:white
+    }
+    .contact-card h3{margin:0 0 4px;font-size:24px}
+    .contact-card p{margin:0;color:#cbd4e0}
+    .contact-links{display:flex;gap:10px;flex-wrap:wrap}
+    .contact-links a{
+      text-decoration:none;
+      padding:9px 12px;
+      border-radius:10px;
+      border:1px solid rgba(255,255,255,.25);
+      font-size:13px;font-weight:760
+    }
+
+    footer{
+      padding:36px 0 55px;
+      color:var(--muted);
+      font-size:13px
+    }
+
+
+    .todo-box{
+      margin-top:16px;
+      padding:14px 16px;
+      border:1.5px dashed #9fb5c8;
+      border-radius:14px;
+      background:#f8fbfd;
+      color:#5c7187;
+      font-size:13px;
+    }
+    .todo-box strong{
+      color:var(--accent);
+      display:block;
+      margin-bottom:4px;
+    }
+    .todo-inline{
+      display:inline-block;
+      margin-top:8px;
+      padding:5px 8px;
+      border-radius:8px;
+      border:1px dashed #9fb5c8;
+      background:#f8fbfd;
+      color:#5c7187;
+      font-size:12px;
+      font-weight:700;
+    }
+
+    @media(max-width:850px){
+      .hero{grid-template-columns:1fr;gap:34px;padding-top:68px}
+      .identity{max-width:390px}
+      .section-layout{grid-template-columns:1fr;gap:24px}
+    }
+    @media(max-width:680px){
+      .wrap{width:min(var(--max),calc(100% - 26px))}
+      .navlinks a:nth-child(2),.navlinks a:nth-child(3),.navlinks a:nth-child(4){display:none}
+      .focus-grid,.award-grid,.skills{grid-template-columns:1fr}
+      .news-item,.timeline-row{grid-template-columns:1fr;gap:5px}
+      .research{grid-template-columns:1fr}
+      .contact-card{flex-direction:column;align-items:flex-start}
+      h1{font-size:55px}
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="wrap">
+    <nav>
+      <a class="brand" href="#top">Soobin Yoon</a>
+      <div class="navlinks">
+        <a href="#about">About</a>
+        <a href="#research">Research</a>
+        <a href="#publications">Publications</a>
+        <a href="#experience">Experience</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main id="top" class="wrap">
+
+  <section class="hero">
+    <div>
+      <div class="eyebrow">Optimization · Autonomous Systems · Wireless Networks</div>
+      <h1>Soobin Yoon</h1>
+      <p class="subtitle">
+        Ph.D. Student in Aerospace Engineering and Mechanics<br>
+        University of Minnesota, Twin Cities
+      </p>
+      <p class="summary">
+        I am interested in optimization and decision-making for cooperative autonomous systems,
+        including UAV–UGV coordination, load balancing, path planning, control, and wireless communication.
+      </p>
+
+      <div class="buttons">
+        <a class="btn primary" href="#research">View Research</a>
+        <a class="btn" href="https://github.com/yoonsoobinie" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn" href="mailto:yoon0279@umn.edu">Email</a>
+        <a class="btn" href="#cv">CV</a>
+      </div>
+    </div>
+
+    <aside class="identity">
+      <div class="avatar">SY</div>
+      <div class="todo-box">
+        <strong>ADD LATER: Profile photo</strong>
+        Replace the “SY” circle with a professional or casual academic profile photo.
+      </div>
+      <strong>Soobin Yoon</strong>
+      <p>University of Minnesota, Twin Cities</p>
+      <p>Aerospace Engineering & Mechanics</p>
+      <div class="divider"></div>
+      <p class="small">B.S., Information & Communication Engineering</p>
+      <p class="small">Dongguk University · 2026</p>
+      <p class="small">Minneapolis, Minnesota</p>
+      <div class="todo-box">
+        <strong>ADD LATER: UMN lab + advisor</strong>
+        Example: “Research Assistant, [Lab Name] · Advisor: Prof. [Name]”
+      </div>
+    </aside>
+  </section>
+
+  <section id="about">
+    <div class="section-layout">
+      <div>
+        <h2>About</h2>
+        <p class="side-note">A short academic introduction.</p>
+      </div>
+
+      <div class="body-copy">
+        <p>
+          I am a Ph.D. student in Aerospace Engineering and Mechanics at the University of Minnesota,
+          Twin Cities. Before joining Minnesota, I received my B.S. in Information and Communication
+          Engineering from Dongguk University in Seoul.
+        </p>
+        <p>
+          My research background spans cooperative UAV–UGV systems, convex optimization, load balancing,
+          path planning, rotor dynamics and control, and IEEE 802.11ax uplink random access. I enjoy
+          problems where optimization, system constraints, and real-world coordination have to be handled together.
+        </p>
+        <div class="todo-box">
+          <strong>ADD LATER: Current Ph.D. research summary</strong>
+          Add 2–3 sentences about the research you are doing now at UMN once the topic is stable.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDIT AREA: NEWS / MILESTONES -->
+  <section id="news">
+    <div class="section-layout">
+      <div>
+        <h2>News</h2>
+        <p class="side-note">Recent milestones.</p>
+      </div>
+
+      <div class="news">
+        <div class="news-item">
+          <div class="news-date">Fall 2026</div>
+          <p>Started the Ph.D. program in Aerospace Engineering and Mechanics at the University of Minnesota.</p>
+        </div>
+
+        <div class="news-item">
+          <div class="news-date">2026</div>
+          <p>Presented work on adaptive access control for IEEE 802.11ax UORA at KICS.</p>
+        </div>
+
+        <div class="news-item">
+          <div class="news-date">Feb. 2026</div>
+          <p>Received B.S. in Information and Communication Engineering from Dongguk University.</p>
+        </div>
+
+        <div class="news-item">
+          <div class="news-date">Aug. 2025</div>
+          <p>First-author paper published in IEEE Transactions on Intelligent Transportation Systems.</p>
+        </div>
+        <div class="todo-box">
+          <strong>ADD LATER: New milestones</strong>
+          Add new paper acceptances, conference presentations, awards, internship/research updates, or major project milestones here.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDIT AREA: CURRENT + PAST RESEARCH -->
+  <section id="research">
+    <div class="section-layout">
+      <div>
+        <h2>Research</h2>
+        <p class="side-note">Selected projects and research directions.</p>
+      </div>
+
+      <div class="research-list">
+
+        <article class="research">
+          <div class="research-index">01</div>
+          <div>
+            <h3>Cooperative UAV–UGV Parcel Pickup</h3>
+            <p>
+              Designed and analyzed cooperative scheduling and load-balancing methods for parcel-pickup systems
+              involving unmanned aerial and ground vehicles.
+            </p>
+            <div class="meta">Convex optimization · Load balancing · Path planning · IEEE T-ITS</div>
+          </div>
+        </article>
+
+        <article class="research">
+          <div class="research-index">02</div>
+          <div>
+            <h3>IEEE 802.11ax UORA Scheduling</h3>
+            <p>
+              Studied uplink OFDMA random access scheduling and developed a MATLAB-based simulator for
+              adaptive access control based on per-station transmission history.
+            </p>
+            <div class="meta">Wireless communication · IEEE 802.11ax · MATLAB · KICS 2026</div>
+          </div>
+        </article>
+
+        <article class="research">
+          <div class="research-index">03</div>
+          <div>
+            <h3>Rotor Dynamics Modeling with SMC-PIDC Control</h3>
+            <p>
+              Implemented rotor dynamics and SMC-PIDC control models in Simulink and prepared technical reports
+              on the resulting system behavior.
+            </p>
+            <div class="meta">Control · Rotor dynamics · Simulink</div>
+          </div>
+        </article>
+
+        <article class="research">
+          <div class="research-index">04</div>
+          <div>
+            <h3>AI-based Independent Study</h3>
+            <p>
+              Explored AI methods and produced technical reports through an independent study project at Dongguk University.
+            </p>
+            <div class="meta">Artificial intelligence · Technical research</div>
+          </div>
+        </article>
+
+        <div class="future">
+          <h3>Current Ph.D. research</h3>
+          <p>
+            This section is intentionally reserved for your current University of Minnesota research.
+          </p>
+          <div class="todo-box">
+            <strong>ADD HERE: Current UMN project</strong>
+            Add project title, 2–4 sentence description, methods/tools, and—if available—a figure or project link.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- EDIT AREA: PUBLICATIONS -->
+  <section id="publications">
+    <div class="section-layout">
+      <div>
+        <h2>Publications</h2>
+        <p class="side-note">Journal and conference publications.</p>
+      </div>
+
+      <div>
+        <article class="pub">
+          <span class="tag">JOURNAL · 2025</span>
+          <h3>Optimal Load Balancing of Cooperative UAV-UGV Parcel Pickup to Minimize Completion Time</h3>
+          <p><strong>S. Yoon</strong>, K. Lee</p>
+          <p class="venue">
+            IEEE Transactions on Intelligent Transportation Systems,
+            vol. 26, no. 8, pp. 12712–12718, Aug. 2025
+          </p>
+        </article>
+
+        <article class="pub">
+          <span class="tag">CONFERENCE · 2026</span>
+          <h3>Adaptive Access Control for IEEE 802.11ax UORA Based on Per-Station Transmission History</h3>
+          <p><strong>S. Yoon</strong>, E.-C. Park</p>
+          <p class="venue">
+            Proceedings of the Korean Institute of Communications and Information Sciences (KICS), 2026 · Poster
+          </p>
+        </article>
+        <div class="todo-box">
+          <strong>ADD LATER: New publications</strong>
+          Copy one publication card above and add title, authors, venue, year, and links such as [Paper], [DOI], [Code], or [Project].
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDIT AREA: EDUCATION / TA / RA -->
+  <section id="experience">
+    <div class="section-layout">
+      <div>
+        <h2>Experience</h2>
+        <p class="side-note">Education and teaching.</p>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-row">
+          <div class="date">Fall 2026 – Present</div>
+          <div>
+            <h3>Ph.D. Student · University of Minnesota, Twin Cities</h3>
+            <p>Aerospace Engineering and Mechanics</p>
+          </div>
+        </div>
+
+        <div class="timeline-row">
+          <div class="date">Mar. 2021 – Feb. 2026</div>
+          <div>
+            <h3>B.S. · Dongguk University</h3>
+            <p>Information and Communication Engineering</p>
+          </div>
+        </div>
+
+        <div class="timeline-row">
+          <div class="date">2023 – 2024</div>
+          <div>
+            <h3>Teaching Assistant · Dongguk University</h3>
+            <p>
+              Microprocessors, Intro to Programming for ICT, AI Programming,
+              and Information & Communication Mathematics.
+            </p>
+          </div>
+        </div>
+        <div class="todo-box">
+          <strong>ADD LATER: UMN teaching / research appointments</strong>
+          Add your current TA course(s), RA appointment, lab role, or other academic service if you want them public.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="awards">
+    <div class="section-layout">
+      <div>
+        <h2>Awards</h2>
+        <p class="side-note">Selected scholarships.</p>
+      </div>
+
+      <div class="award-grid">
+        <div class="award">
+          <strong>Dongguk University Merit-based Scholarships</strong>
+          <span>2022–2023</span>
+        </div>
+
+        <div class="award">
+          <strong>Samsung Software Talent Development Scholarship</strong>
+          <span>2022</span>
+        </div>
+        <div class="todo-box">
+          <strong>ADD LATER: New awards / scholarships</strong>
+          Add future fellowships, travel grants, best paper/poster awards, or university scholarships here.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="section-layout">
+      <div>
+        <h2>Technical Skills</h2>
+        <p class="side-note">Research and engineering toolkit.</p>
+      </div>
+
+      <div class="skills">
+        <div class="skillbox">
+          <strong>Programming</strong>
+          <div class="pills">
+            <span class="pill">MATLAB</span>
+            <span class="pill">Python</span>
+            <span class="pill">C/C++</span>
+          </div>
+        </div>
+
+        <div class="skillbox">
+          <strong>Tools</strong>
+          <div class="pills">
+            <span class="pill">Simulink</span>
+            <span class="pill">CVX</span>
+            <span class="pill">MOSEK</span>
+          </div>
+        </div>
+
+        <div class="skillbox">
+          <strong>Languages</strong>
+          <div class="pills">
+            <span class="pill">Korean · Native</span>
+            <span class="pill">English</span>
+          </div>
+        </div>
+
+        <div class="todo-box">
+          <strong>ADD LATER: New tools / frameworks</strong>
+          Add software, optimization solvers, robotics tools, ML frameworks, or simulation environments you start using during the Ph.D.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDIT AREA: CV PDF -->
+  <section id="cv">
+    <div class="section-layout">
+      <div>
+        <h2>CV</h2>
+        <p class="side-note">Keep one current academic CV here.</p>
+      </div>
+
+      <div class="future">
+        <h3>Curriculum Vitae</h3>
+        <p>
+          Keep one current academic CV here.
+        </p>
+        <div class="todo-box">
+          <strong>ADD HERE: Updated CV PDF</strong>
+          Upload a file named <code>cv.pdf</code> to the same GitHub repository, then replace this box with a button linking to <code>cv.pdf</code>.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="contact-card">
+      <div>
+        <h3>Contact</h3>
+        <p>Research, collaboration, or academic inquiries.</p>
+      </div>
+
+      <div class="contact-links">
+        <a href="mailto:yoon0279@umn.edu">yoon0279@umn.edu</a>
+        <a href="https://github.com/yoonsoobinie" target="_blank" rel="noopener">GitHub</a>
+        <span class="todo-inline">ADD: Google Scholar</span>
+        <span class="todo-inline">OPTIONAL: LinkedIn</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    © 2026 Soobin Yoon · Hosted on GitHub Pages
+  </div>
+</footer>
+</body>
+</html>
