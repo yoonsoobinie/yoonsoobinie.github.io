@@ -1,833 +1,2187 @@
-from pathlib import Path
-import zipfile
-
-outdir = Path("/mnt/data/soobin-homepage-latest-first")
-outdir.mkdir(parents=True, exist_ok=True)
-
-html = r'''<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Soobin Yoon — Ph.D. student in Aerospace Engineering and Mechanics at the University of Minnesota.">
+
+  <meta
+    name="description"
+    content="Soobin Yoon — Ph.D. student in Aerospace Engineering and Mechanics at the University of Minnesota."
+  >
+
   <title>Soobin Yoon</title>
 
   <style>
-    :root{
-      --bg:#f7f9fc;
-      --surface:#ffffff;
-      --surface2:#f0f5f9;
-      --text:#172235;
-      --muted:#66758a;
-      --line:#e3e9f0;
-      --accent:#315f86;
-      --accent2:#587fa4;
-      --soft:#eaf2f8;
-      --max:1100px;
-      --radius:20px;
-      --shadow:0 16px 46px rgba(23,34,53,.07);
+    :root {
+      --bg: #f7f9fc;
+      --surface: #ffffff;
+      --text: #172235;
+      --muted: #66758a;
+      --line: #e3e9f0;
+
+      --accent: #315f86;
+      --soft: #eaf2f8;
+
+      --max: 1100px;
+
+      --shadow:
+        0 16px 46px rgba(23, 34, 53, 0.07);
     }
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+
       background:
-        radial-gradient(circle at 88% 0%, rgba(49,95,134,.10), transparent 28rem),
+        radial-gradient(
+          circle at 88% 0%,
+          rgba(49, 95, 134, 0.10),
+          transparent 28rem
+        ),
         var(--bg);
-      color:var(--text);
-      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-      line-height:1.68;
-      -webkit-font-smoothing:antialiased;
-    }
-    a{color:inherit;text-underline-offset:3px}
-    .wrap{width:min(var(--max),calc(100% - 40px));margin:0 auto}
 
-    header{
-      position:sticky;top:0;z-index:50;
-      background:rgba(247,249,252,.90);
-      backdrop-filter:blur(14px);
-      border-bottom:1px solid rgba(227,233,240,.95);
-    }
-    nav{
-      min-height:68px;
-      display:flex;align-items:center;justify-content:space-between;gap:24px;
-    }
-    .brand{
-      text-decoration:none;
-      font-weight:850;
-      letter-spacing:-.025em;
-      font-size:18px;
-    }
-    .navlinks{display:flex;gap:18px;flex-wrap:wrap}
-    .navlinks a{
-      text-decoration:none;
-      color:var(--muted);
-      font-size:14px;
-      font-weight:650;
-    }
-    .navlinks a:hover{color:var(--text)}
+      color: var(--text);
 
-    .hero{
-      display:grid;
-      grid-template-columns:1.3fr .7fr;
-      gap:58px;
-      align-items:center;
-      padding:96px 0 78px;
-    }
-    .eyebrow{
-      display:inline-flex;align-items:center;gap:8px;
-      padding:6px 10px;
-      border-radius:999px;
-      background:var(--soft);
-      color:var(--accent);
-      font-size:13px;
-      font-weight:850;
-      margin-bottom:18px;
-    }
-    .eyebrow:before{
-      content:"";
-      width:7px;height:7px;border-radius:50%;
-      background:var(--accent);
-    }
-    h1{
-      margin:0;
-      font-size:clamp(52px,8vw,82px);
-      line-height:.98;
-      letter-spacing:-.055em;
-    }
-    .subtitle{
-      margin:20px 0 0;
-      font-size:22px;
-      color:#3f4e62;
-    }
-    .summary{
-      max-width:760px;
-      margin:18px 0 0;
-      color:var(--muted);
-      font-size:16px;
-    }
-    .buttons{
-      display:flex;gap:10px;flex-wrap:wrap;
-      margin-top:28px;
-    }
-    .btn{
-      padding:11px 15px;
-      border-radius:11px;
-      border:1px solid var(--line);
-      background:var(--surface);
-      text-decoration:none;
-      font-size:14px;
-      font-weight:760;
-      transition:.18s ease;
-    }
-    .btn.primary{
-      background:var(--text);
-      border-color:var(--text);
-      color:#fff;
-    }
-    .btn:hover{transform:translateY(-1px)}
+      font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
 
-    .identity{
-      background:rgba(255,255,255,.92);
-      border:1px solid var(--line);
-      border-radius:28px;
-      box-shadow:var(--shadow);
-      padding:28px;
-    }
-    .avatar{
-      width:140px;height:140px;border-radius:50%;
-      display:grid;place-items:center;
-      background:linear-gradient(145deg,#dbe8f2,#f6f9fb);
-      border:1px solid #d6e3ed;
-      color:var(--accent);
-      font-size:44px;
-      font-weight:900;
-      letter-spacing:-.045em;
-      margin-bottom:20px;
-    }
-    .identity strong{display:block;font-size:20px}
-    .identity p{margin:5px 0;color:var(--muted);font-size:14px}
-    .divider{border-top:1px solid var(--line);margin:18px 0}
+      line-height: 1.68;
 
-    section{
-      padding:66px 0;
-      border-top:1px solid var(--line);
-    }
-    .section-layout{
-      display:grid;
-      grid-template-columns:220px 1fr;
-      gap:44px;
-      align-items:start;
-    }
-    h2{
-      margin:0;
-      font-size:28px;
-      letter-spacing:-.035em;
-    }
-    .side-note{
-      margin:6px 0 0;
-      color:var(--muted);
-      font-size:13px;
+      -webkit-font-smoothing: antialiased;
     }
 
-    .todo{
-      padding:16px 17px;
-      border:1.5px dashed #9fb6c9;
-      border-radius:15px;
-      background:#f9fcfe;
-      color:#5d7388;
-      font-size:13px;
-    }
-    .todo strong{
-      display:block;
-      margin-bottom:4px;
-      color:var(--accent);
-    }
-    .todo-inline{
-      display:inline-block;
-      padding:5px 8px;
-      border:1px dashed #9fb6c9;
-      border-radius:8px;
-      background:#f9fcfe;
-      color:#5d7388;
-      font-size:12px;
-      font-weight:750;
+    a {
+      color: inherit;
+      text-underline-offset: 3px;
     }
 
-    .current-box{
-      background:linear-gradient(180deg,#fff,#fbfdff);
-      border:1px solid #dce6ee;
-      border-radius:22px;
-      padding:24px;
-      box-shadow:0 10px 30px rgba(23,34,53,.035);
-    }
-    .current-box .label{
-      color:var(--accent);
-      font-size:12px;
-      font-weight:900;
-      letter-spacing:.06em;
-      text-transform:uppercase;
-    }
-    .current-box h3{
-      margin:10px 0 8px;
-      font-size:20px;
-      letter-spacing:-.025em;
-    }
-    .current-box p{margin:0;color:var(--muted)}
+    .wrap {
+      width: min(
+        var(--max),
+        calc(100% - 40px)
+      );
 
-    .news{display:flex;flex-direction:column}
-    .news-item{
-      display:grid;
-      grid-template-columns:110px 1fr;
-      gap:20px;
-      padding:14px 0;
-      border-bottom:1px solid var(--line);
-    }
-    .news-item:last-of-type{border-bottom:0}
-    .news-date{
-      color:var(--accent);
-      font-size:13px;
-      font-weight:850;
-    }
-    .news-item p{margin:0;color:#455468}
-
-    .pub{
-      position:relative;
-      background:linear-gradient(180deg,#fff,#fbfdff);
-      border:1px solid #dce6ee;
-      border-radius:19px;
-      padding:22px 22px 22px 26px;
-      margin-bottom:14px;
-      overflow:hidden;
-    }
-    .pub:before{
-      content:"";
-      position:absolute;left:0;top:0;bottom:0;
-      width:4px;background:var(--accent);
-    }
-    .tag{
-      display:inline-block;
-      padding:4px 8px;
-      border-radius:999px;
-      background:var(--soft);
-      color:var(--accent);
-      font-size:11px;
-      font-weight:850;
-      margin-bottom:10px;
-    }
-    .pub h3{
-      margin:0 0 7px;
-      font-size:18px;
-      line-height:1.45;
-      letter-spacing:-.02em;
-    }
-    .pub p{margin:4px 0;color:#526176;font-size:14px}
-    .venue{font-weight:780;color:#2c3a4d!important}
-
-    .research-list{display:flex;flex-direction:column;gap:14px}
-    .research{
-      display:grid;
-      grid-template-columns:120px 1fr;
-      gap:24px;
-      background:var(--surface);
-      border:1px solid var(--line);
-      border-radius:18px;
-      padding:20px;
-    }
-    .rdate{
-      color:var(--accent);
-      font-size:13px;
-      font-weight:850;
-      padding-top:2px;
-    }
-    .research h3{
-      margin:0 0 6px;
-      font-size:17px;
-      letter-spacing:-.02em;
-    }
-    .research p{
-      margin:0;
-      color:var(--muted);
-      font-size:14px;
-    }
-    .meta{
-      margin-top:9px!important;
-      color:#51637a!important;
-      font-size:13px!important;
-      font-weight:700;
+      margin: 0 auto;
     }
 
-    .timeline{display:flex;flex-direction:column;gap:13px}
-    .timeline-row{
-      display:grid;
-      grid-template-columns:165px 1fr;
-      gap:22px;
-      background:var(--surface);
-      border:1px solid var(--line);
-      border-radius:16px;
-      padding:18px 19px;
-    }
-    .date{font-size:13px;font-weight:820;color:var(--muted)}
-    .timeline-row h3{margin:0;font-size:16px}
-    .timeline-row p{margin:4px 0 0;color:var(--muted);font-size:14px}
 
-    .award-grid{
-      display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:14px;
-    }
-    .award{
-      background:var(--surface);
-      border:1px solid var(--line);
-      border-radius:16px;
-      padding:18px;
-    }
-    .award strong{display:block;margin-bottom:4px}
-    .award span{font-size:14px;color:var(--muted)}
+    /* =========================
+       HEADER
+    ========================= */
 
-    .skills{
-      display:grid;
-      grid-template-columns:repeat(3,minmax(0,1fr));
-      gap:14px;
-    }
-    .skillbox{
-      background:var(--surface);
-      border:1px solid var(--line);
-      border-radius:16px;
-      padding:18px;
-    }
-    .skillbox strong{display:block;margin-bottom:10px}
-    .pills{display:flex;gap:7px;flex-wrap:wrap}
-    .pill{
-      padding:6px 9px;
-      border-radius:999px;
-      background:var(--soft);
-      color:#496984;
-      font-size:12px;
-      font-weight:760;
+    header {
+      position: sticky;
+
+      top: 0;
+
+      z-index: 50;
+
+      background:
+        rgba(247, 249, 252, 0.90);
+
+      backdrop-filter: blur(14px);
+
+      border-bottom:
+        1px solid rgba(227, 233, 240, 0.95);
     }
 
-    .contact-card{
-      display:flex;align-items:center;justify-content:space-between;gap:24px;
-      padding:30px;
-      border-radius:24px;
-      background:var(--text);
-      color:#fff;
-    }
-    .contact-card h3{margin:0 0 4px;font-size:24px}
-    .contact-card p{margin:0;color:#cbd4df}
-    .contact-links{display:flex;gap:10px;flex-wrap:wrap}
-    .contact-links a{
-      text-decoration:none;
-      padding:9px 12px;
-      border-radius:10px;
-      border:1px solid rgba(255,255,255,.25);
-      font-size:13px;
-      font-weight:760;
+    nav {
+      min-height: 68px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 24px;
     }
 
-    footer{
-      padding:36px 0 55px;
-      color:var(--muted);
-      font-size:13px;
+    .brand {
+      text-decoration: none;
+
+      font-weight: 850;
+
+      letter-spacing: -0.025em;
+
+      font-size: 18px;
     }
 
-    @media(max-width:850px){
-      .hero{grid-template-columns:1fr;gap:34px;padding-top:68px}
-      .identity{max-width:390px}
-      .section-layout{grid-template-columns:1fr;gap:24px}
+    .navlinks {
+      display: flex;
+
+      gap: 18px;
+
+      flex-wrap: wrap;
     }
-    @media(max-width:680px){
-      .wrap{width:min(var(--max),calc(100% - 26px))}
-      .navlinks a:nth-child(2),.navlinks a:nth-child(3),.navlinks a:nth-child(4){display:none}
-      .research,.news-item,.timeline-row{grid-template-columns:1fr;gap:6px}
-      .award-grid,.skills{grid-template-columns:1fr}
-      .contact-card{flex-direction:column;align-items:flex-start}
-      h1{font-size:55px}
+
+    .navlinks a {
+      text-decoration: none;
+
+      color: var(--muted);
+
+      font-size: 14px;
+
+      font-weight: 650;
+    }
+
+    .navlinks a:hover {
+      color: var(--text);
+    }
+
+
+    /* =========================
+       HERO
+    ========================= */
+
+    .hero {
+      display: grid;
+
+      grid-template-columns:
+        1.3fr 0.7fr;
+
+      gap: 58px;
+
+      align-items: center;
+
+      padding:
+        96px 0 78px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+      padding:
+        6px 10px;
+
+      border-radius: 999px;
+
+      background: var(--soft);
+
+      color: var(--accent);
+
+      font-size: 13px;
+
+      font-weight: 850;
+
+      margin-bottom: 18px;
+    }
+
+    .eyebrow::before {
+      content: "";
+
+      width: 7px;
+
+      height: 7px;
+
+      border-radius: 50%;
+
+      background: var(--accent);
+    }
+
+    h1 {
+      margin: 0;
+
+      font-size:
+        clamp(52px, 8vw, 82px);
+
+      line-height: 0.98;
+
+      letter-spacing: -0.055em;
+    }
+
+    .subtitle {
+      margin:
+        20px 0 0;
+
+      font-size: 22px;
+
+      color: #3f4e62;
+    }
+
+    .summary {
+      max-width: 760px;
+
+      margin:
+        18px 0 0;
+
+      color: var(--muted);
+
+      font-size: 16px;
+    }
+
+    .buttons {
+      display: flex;
+
+      gap: 10px;
+
+      flex-wrap: wrap;
+
+      margin-top: 28px;
+    }
+
+    .btn {
+      padding:
+        11px 15px;
+
+      border-radius: 11px;
+
+      border:
+        1px solid var(--line);
+
+      background:
+        var(--surface);
+
+      text-decoration: none;
+
+      font-size: 14px;
+
+      font-weight: 760;
+
+      transition:
+        0.18s ease;
+    }
+
+    .btn.primary {
+      background: var(--text);
+
+      border-color:
+        var(--text);
+
+      color: white;
+    }
+
+    .btn:hover {
+      transform:
+        translateY(-1px);
+    }
+
+
+    /* =========================
+       PROFILE
+    ========================= */
+
+    .identity {
+      background:
+        rgba(255, 255, 255, 0.92);
+
+      border:
+        1px solid var(--line);
+
+      border-radius: 28px;
+
+      box-shadow:
+        var(--shadow);
+
+      padding: 28px;
+    }
+
+    .avatar {
+      width: 140px;
+
+      height: 140px;
+
+      border-radius: 50%;
+
+      object-fit: cover;
+
+      object-position: center;
+
+      display: block;
+
+      border:
+        1px solid #d6e3ed;
+
+      margin-bottom: 20px;
+    }
+
+    .identity strong {
+      display: block;
+
+      font-size: 20px;
+    }
+
+    .identity p {
+      margin:
+        5px 0;
+
+      color: var(--muted);
+
+      font-size: 14px;
+    }
+
+    .divider {
+      border-top:
+        1px solid var(--line);
+
+      margin:
+        18px 0;
+    }
+
+
+    /* =========================
+       GENERAL SECTIONS
+    ========================= */
+
+    section {
+      padding:
+        66px 0;
+
+      border-top:
+        1px solid var(--line);
+    }
+
+    .section-layout {
+      display: grid;
+
+      grid-template-columns:
+        220px 1fr;
+
+      gap: 44px;
+
+      align-items: start;
+    }
+
+    h2 {
+      margin: 0;
+
+      font-size: 28px;
+
+      letter-spacing:
+        -0.035em;
+    }
+
+    .side-note {
+      margin:
+        6px 0 0;
+
+      color: var(--muted);
+
+      font-size: 13px;
+    }
+
+
+    /* =========================
+       PLACEHOLDERS
+    ========================= */
+
+    .todo {
+      padding:
+        16px 17px;
+
+      border:
+        1.5px dashed #9fb6c9;
+
+      border-radius: 15px;
+
+      background:
+        #f9fcfe;
+
+      color:
+        #5d7388;
+
+      font-size: 13px;
+    }
+
+    .todo strong {
+      display: block;
+
+      margin-bottom: 4px;
+
+      color: var(--accent);
+    }
+
+    .todo-inline {
+      display: inline-block;
+
+      padding:
+        5px 8px;
+
+      border:
+        1px dashed #9fb6c9;
+
+      border-radius: 8px;
+
+      background:
+        #f9fcfe;
+
+      color:
+        #5d7388;
+
+      font-size: 12px;
+
+      font-weight: 750;
+    }
+
+
+    /* =========================
+       CURRENT RESEARCH
+    ========================= */
+
+    .current-box {
+      background:
+        linear-gradient(
+          180deg,
+          #ffffff,
+          #fbfdff
+        );
+
+      border:
+        1px solid #dce6ee;
+
+      border-radius: 22px;
+
+      padding: 24px;
+
+      box-shadow:
+        0 10px 30px
+        rgba(23, 34, 53, 0.035);
+    }
+
+    .current-box .label {
+      color:
+        var(--accent);
+
+      font-size: 12px;
+
+      font-weight: 900;
+
+      letter-spacing:
+        0.06em;
+
+      text-transform:
+        uppercase;
+    }
+
+    .current-box h3 {
+      margin:
+        10px 0 8px;
+
+      font-size: 20px;
+
+      letter-spacing:
+        -0.025em;
+    }
+
+    .current-box p {
+      margin: 0;
+
+      color:
+        var(--muted);
+    }
+
+
+    /* =========================
+       NEWS
+    ========================= */
+
+    .news {
+      display: flex;
+
+      flex-direction: column;
+    }
+
+    .news-item {
+      display: grid;
+
+      grid-template-columns:
+        110px 1fr;
+
+      gap: 20px;
+
+      padding:
+        14px 0;
+
+      border-bottom:
+        1px solid var(--line);
+    }
+
+    .news-date {
+      color:
+        var(--accent);
+
+      font-size: 13px;
+
+      font-weight: 850;
+    }
+
+    .news-item p {
+      margin: 0;
+
+      color:
+        #455468;
+    }
+
+
+    /* =========================
+       PUBLICATIONS
+    ========================= */
+
+    .pub {
+      position: relative;
+
+      background:
+        linear-gradient(
+          180deg,
+          #ffffff,
+          #fbfdff
+        );
+
+      border:
+        1px solid #dce6ee;
+
+      border-radius: 19px;
+
+      padding:
+        22px 22px 22px 26px;
+
+      margin-bottom: 14px;
+
+      overflow: hidden;
+    }
+
+    .pub::before {
+      content: "";
+
+      position: absolute;
+
+      left: 0;
+
+      top: 0;
+
+      bottom: 0;
+
+      width: 4px;
+
+      background:
+        var(--accent);
+    }
+
+    .tag {
+      display: inline-block;
+
+      padding:
+        4px 8px;
+
+      border-radius: 999px;
+
+      background:
+        var(--soft);
+
+      color:
+        var(--accent);
+
+      font-size: 11px;
+
+      font-weight: 850;
+
+      margin-bottom: 10px;
+    }
+
+    .pub h3 {
+      margin:
+        0 0 7px;
+
+      font-size: 18px;
+
+      line-height: 1.45;
+
+      letter-spacing:
+        -0.02em;
+    }
+
+    .pub p {
+      margin:
+        4px 0;
+
+      color:
+        #526176;
+
+      font-size: 14px;
+    }
+
+    .venue {
+      font-weight: 780;
+
+      color:
+        #2c3a4d !important;
+    }
+
+    .paper-link {
+      display: inline-block;
+
+      margin-top: 10px;
+
+      color:
+        var(--accent);
+
+      text-decoration: none;
+
+      font-size: 13px;
+
+      font-weight: 800;
+    }
+
+    .paper-link:hover {
+      text-decoration: underline;
+    }
+
+
+    /* =========================
+       RESEARCH EXPERIENCE
+    ========================= */
+
+    .research-list {
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 14px;
+    }
+
+    .research {
+      display: grid;
+
+      grid-template-columns:
+        120px 1fr;
+
+      gap: 24px;
+
+      background:
+        var(--surface);
+
+      border:
+        1px solid var(--line);
+
+      border-radius: 18px;
+
+      padding: 20px;
+    }
+
+    .rdate {
+      color:
+        var(--accent);
+
+      font-size: 13px;
+
+      font-weight: 850;
+
+      padding-top: 2px;
+    }
+
+    .research h3 {
+      margin:
+        0 0 6px;
+
+      font-size: 17px;
+
+      letter-spacing:
+        -0.02em;
+    }
+
+    .research p {
+      margin: 0;
+
+      color:
+        var(--muted);
+
+      font-size: 14px;
+    }
+
+    .meta {
+      margin-top:
+        9px !important;
+
+      color:
+        #51637a !important;
+
+      font-size:
+        13px !important;
+
+      font-weight: 700;
+    }
+
+
+    /* =========================
+       EDUCATION / TEACHING
+    ========================= */
+
+    .timeline {
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 13px;
+    }
+
+    .timeline-row {
+      display: grid;
+
+      grid-template-columns:
+        165px 1fr;
+
+      gap: 22px;
+
+      background:
+        var(--surface);
+
+      border:
+        1px solid var(--line);
+
+      border-radius: 16px;
+
+      padding:
+        18px 19px;
+    }
+
+    .date {
+      font-size: 13px;
+
+      font-weight: 820;
+
+      color:
+        var(--muted);
+    }
+
+    .timeline-row h3 {
+      margin: 0;
+
+      font-size: 16px;
+    }
+
+    .timeline-row p {
+      margin:
+        4px 0 0;
+
+      color:
+        var(--muted);
+
+      font-size: 14px;
+    }
+
+
+    /* =========================
+       AWARDS
+    ========================= */
+
+    .award-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+      gap: 14px;
+    }
+
+    .award {
+      background:
+        var(--surface);
+
+      border:
+        1px solid var(--line);
+
+      border-radius: 16px;
+
+      padding: 18px;
+    }
+
+    .award strong {
+      display: block;
+
+      margin-bottom: 4px;
+    }
+
+    .award span {
+      font-size: 14px;
+
+      color:
+        var(--muted);
+    }
+
+
+    /* =========================
+       SKILLS
+    ========================= */
+
+    .skills {
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+      gap: 14px;
+    }
+
+    .skillbox {
+      background:
+        var(--surface);
+
+      border:
+        1px solid var(--line);
+
+      border-radius: 16px;
+
+      padding: 18px;
+    }
+
+    .skillbox strong {
+      display: block;
+
+      margin-bottom: 10px;
+    }
+
+    .pills {
+      display: flex;
+
+      gap: 7px;
+
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      padding:
+        6px 9px;
+
+      border-radius: 999px;
+
+      background:
+        var(--soft);
+
+      color:
+        #496984;
+
+      font-size: 12px;
+
+      font-weight: 760;
+    }
+
+
+    /* =========================
+       CONTACT
+    ========================= */
+
+    .contact-card {
+      display: flex;
+
+      align-items: center;
+
+      justify-content:
+        space-between;
+
+      gap: 24px;
+
+      padding: 30px;
+
+      border-radius: 24px;
+
+      background:
+        var(--text);
+
+      color: white;
+    }
+
+    .contact-card h3 {
+      margin:
+        0 0 4px;
+
+      font-size: 24px;
+    }
+
+    .contact-card p {
+      margin: 0;
+
+      color:
+        #cbd4df;
+    }
+
+    .contact-links {
+      display: flex;
+
+      gap: 10px;
+
+      flex-wrap: wrap;
+    }
+
+    .contact-links a {
+      text-decoration: none;
+
+      padding:
+        9px 12px;
+
+      border-radius: 10px;
+
+      border:
+        1px solid
+        rgba(255, 255, 255, 0.25);
+
+      font-size: 13px;
+
+      font-weight: 760;
+    }
+
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer {
+      padding:
+        36px 0 55px;
+
+      color:
+        var(--muted);
+
+      font-size: 13px;
+    }
+
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 850px) {
+
+      .hero {
+        grid-template-columns: 1fr;
+
+        gap: 34px;
+
+        padding-top: 68px;
+      }
+
+      .identity {
+        max-width: 390px;
+      }
+
+      .section-layout {
+        grid-template-columns: 1fr;
+
+        gap: 24px;
+      }
+    }
+
+    @media (max-width: 680px) {
+
+      .wrap {
+        width:
+          min(
+            var(--max),
+            calc(100% - 26px)
+          );
+      }
+
+      .navlinks a:nth-child(2),
+      .navlinks a:nth-child(3),
+      .navlinks a:nth-child(4) {
+        display: none;
+      }
+
+      .research,
+      .news-item,
+      .timeline-row {
+        grid-template-columns: 1fr;
+
+        gap: 6px;
+      }
+
+      .award-grid,
+      .skills {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-card {
+        flex-direction: column;
+
+        align-items: flex-start;
+      }
+
+      h1 {
+        font-size: 55px;
+      }
     }
   </style>
 </head>
 
+
 <body>
+
+
+<!-- =========================
+     HEADER
+========================= -->
+
 <header>
   <div class="wrap">
+
     <nav>
-      <a class="brand" href="#top">Soobin Yoon</a>
+
+      <a
+        class="brand"
+        href="#top"
+      >
+        Soobin Yoon
+      </a>
+
       <div class="navlinks">
-        <a href="#current">Current</a>
-        <a href="#publications">Publications</a>
-        <a href="#research">Research</a>
-        <a href="#experience">Experience</a>
-        <a href="#contact">Contact</a>
+
+        <a href="#current">
+          Current
+        </a>
+
+        <a href="#publications">
+          Publications
+        </a>
+
+        <a href="#research">
+          Research
+        </a>
+
+        <a href="#experience">
+          Experience
+        </a>
+
+        <a href="#contact">
+          Contact
+        </a>
+
       </div>
+
     </nav>
+
   </div>
 </header>
 
-<main id="top" class="wrap">
 
-  <!-- CURRENT IDENTITY -->
-  <section class="hero">
+
+<main
+  id="top"
+  class="wrap"
+>
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section class="hero">
+
+  <div>
+
+    <div class="eyebrow">
+      Optimization · Autonomous Systems · Wireless Networks
+    </div>
+
+    <h1>
+      Soobin Yoon
+    </h1>
+
+    <p class="subtitle">
+
+      Ph.D. Student in Aerospace Engineering and Mechanics
+
+      <br>
+
+      University of Minnesota, Twin Cities
+
+    </p>
+
+    <p class="summary">
+
+      My research interests include optimization and
+      decision-making for cooperative autonomous systems,
+      with prior work spanning UAV–UGV coordination,
+      load balancing, path planning, control,
+      and IEEE 802.11ax wireless communication.
+
+    </p>
+
+
+    <div class="buttons">
+
+      <a
+        class="btn primary"
+        href="#current"
+      >
+        Current Research
+      </a>
+
+      <a
+        class="btn"
+        href="#publications"
+      >
+        Publications
+      </a>
+
+      <a
+        class="btn"
+        href="https://github.com/yoonsoobinie"
+        target="_blank"
+        rel="noopener"
+      >
+        GitHub
+      </a>
+
+      <a
+        class="btn"
+        href="mailto:yoon0279@umn.edu"
+      >
+        Email
+      </a>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- PROFILE -->
+
+  <aside class="identity">
+
+
+    <!--
+      프로필 사진 파일 이름은
+      반드시 profile.jpg 로 업로드
+    -->
+
+    <img
+      class="avatar"
+      src="profile.jpg"
+      alt="Soobin Yoon"
+    >
+
+
+    <div class="divider"></div>
+
+
+    <strong>
+      Soobin Yoon
+    </strong>
+
+    <p>
+      University of Minnesota, Twin Cities
+    </p>
+
+    <p>
+      Aerospace Engineering & Mechanics
+    </p>
+
+
+    <div class="divider"></div>
+
+
+    <p>
+      B.S., Information & Communication Engineering
+    </p>
+
+    <p>
+      Dongguk University · Feb. 2026
+    </p>
+
+
+    <div
+      class="todo"
+      style="margin-top: 16px"
+    >
+
+      <strong>
+        ADD HERE: UMN advisor / lab
+      </strong>
+
+      Example:
+      Advisor: Prof. ___ · ___ Lab
+
+    </div>
+
+  </aside>
+
+</section>
+
+
+
+<!-- =========================
+     CURRENT RESEARCH
+========================= -->
+
+<section id="current">
+
+  <div class="section-layout">
+
     <div>
-      <div class="eyebrow">Optimization · Autonomous Systems · Wireless Networks</div>
-      <h1>Soobin Yoon</h1>
-      <p class="subtitle">
-        Ph.D. Student in Aerospace Engineering and Mechanics<br>
-        University of Minnesota, Twin Cities
-      </p>
-      <p class="summary">
-        My research interests include optimization and decision-making for cooperative autonomous systems,
-        with prior work spanning UAV–UGV coordination, load balancing, path planning, control,
-        and IEEE 802.11ax wireless communication.
+
+      <h2>
+        Current Research
+      </h2>
+
+      <p class="side-note">
+        What I am working on now.
       </p>
 
-      <div class="buttons">
-        <a class="btn primary" href="#current">Current Research</a>
-        <a class="btn" href="#publications">Publications</a>
-        <a class="btn" href="https://github.com/yoonsoobinie" target="_blank" rel="noopener">GitHub</a>
-        <a class="btn" href="mailto:yoon0279@umn.edu">Email</a>
-      </div>
     </div>
 
-    <aside class="identity">
-      <img class="avatar" src="profile.jpg" alt="Soobin Yoon">
 
-      <div class="divider"></div>
 
-      <strong>Soobin Yoon</strong>
-      <p>University of Minnesota, Twin Cities</p>
-      <p>Aerospace Engineering & Mechanics</p>
+    <div>
 
-      <div class="divider"></div>
+      <div class="current-box">
 
-      <p>B.S., Information & Communication Engineering</p>
-      <p>Dongguk University · Feb. 2026</p>
-
-      <div class="todo" style="margin-top:16px">
-        <strong>ADD HERE: UMN advisor / lab</strong>
-        Example: “Advisor: Prof. ___ · ___ Lab”
-      </div>
-    </aside>
-  </section>
-
-  <!-- CURRENT RESEARCH FIRST -->
-  <section id="current">
-    <div class="section-layout">
-      <div>
-        <h2>Current Research</h2>
-        <p class="side-note">What I am working on now.</p>
-      </div>
-
-      <div>
-        <div class="current-box">
-          <div class="label">University of Minnesota · Ph.D.</div>
-          <h3>Current Ph.D. Research</h3>
-          <p>
-            This section is intentionally reserved for your newest University of Minnesota research,
-            so the homepage always leads with what you are doing now.
-          </p>
-
-          <div class="todo" style="margin-top:16px">
-            <strong>ADD HERE: Current UMN project</strong>
-            Add the project title, 2–4 sentence description, methods/tools, advisor/lab,
-            and optionally one figure, code link, or project page.
-          </div>
+        <div class="label">
+          University of Minnesota · Ph.D.
         </div>
+
+        <h3>
+          Current Ph.D. Research
+        </h3>
+
+        <p>
+
+          This section is reserved for my
+          current research at the
+          University of Minnesota.
+
+        </p>
+
+
+        <div
+          class="todo"
+          style="margin-top: 16px"
+        >
+
+          <strong>
+            ADD HERE: Current UMN project
+          </strong>
+
+          Add the project title,
+          2–4 sentence description,
+          methods/tools,
+          advisor/lab,
+          and optionally a figure,
+          code link,
+          or project page.
+
+        </div>
+
       </div>
+
     </div>
-  </section>
 
-  <!-- NEWS -->
-  <section id="news">
-    <div class="section-layout">
-      <div>
-        <h2>News</h2>
-        <p class="side-note">Newest milestones first.</p>
-      </div>
+  </div>
 
-      <div class="news">
-        <div class="news-item">
-          <div class="news-date">Fall 2026</div>
-          <p>Started the Ph.D. program in Aerospace Engineering and Mechanics at the University of Minnesota, Twin Cities.</p>
-        </div>
+</section>
 
-        <div class="news-item">
-          <div class="news-date">2026</div>
-          <p>Conference paper on adaptive access control for IEEE 802.11ax UORA accepted at KICS as a poster.</p>
-        </div>
 
-        <div class="news-item">
-          <div class="news-date">Feb. 2026</div>
-          <p>Received B.S. in Information and Communication Engineering from Dongguk University.</p>
-        </div>
 
-        <div class="news-item">
-          <div class="news-date">Aug. 2025</div>
-          <p>First-author journal paper published in IEEE Transactions on Intelligent Transportation Systems.</p>
-        </div>
+<!-- =========================
+     NEWS
+========================= -->
 
-        <div class="todo" style="margin-top:14px">
-          <strong>ADD LATER: New milestones</strong>
-          New papers, conference presentations, awards, internships, research milestones, or lab updates go here.
-        </div>
-      </div>
+<section id="news">
+
+  <div class="section-layout">
+
+    <div>
+
+      <h2>
+        News
+      </h2>
+
+      <p class="side-note">
+        Recent milestones.
+      </p>
+
     </div>
-  </section>
 
-  <!-- PUBLICATIONS NEWEST FIRST -->
-  <section id="publications">
-    <div class="section-layout">
-      <div>
-        <h2>Publications</h2>
-        <p class="side-note">Newest first.</p>
-      </div>
 
-      <div>
-        <article class="pub">
-          <span class="tag">CONFERENCE · 2026</span>
-          <h3>Adaptive Access Control for IEEE 802.11ax UORA Based on Per-Station Transmission History</h3>
-          <p><strong>S. Yoon</strong>, E.-C. Park</p>
-          <p class="venue">
-            Proceedings of the Korean Institute of Communications and Information Sciences (KICS), 2026 · Poster
-          </p>
-          <span class="todo-inline">ADD: Paper / PDF / DOI link</span>
-        </article>
 
-        <article class="pub">
-          <span class="tag">JOURNAL · 2025</span>
-          <h3>Optimal Load Balancing of Cooperative UAV-UGV Parcel Pickup to Minimize Completion Time</h3>
-          <p><strong>S. Yoon</strong>, K. Lee</p>
-          <p class="venue">
-            IEEE Transactions on Intelligent Transportation Systems,
-            vol. 26, no. 8, pp. 12712–12718, Aug. 2025
-          </p>
-          <span class="todo-inline">ADD: DOI / Paper / Project link</span>
-        </article>
+    <div class="news">
 
-        <div class="todo">
-          <strong>ADD LATER: New publications</strong>
-          Copy a publication card above and add title, authors, venue, year, plus [Paper], [DOI], [Code], or [Project].
+
+      <div class="news-item">
+
+        <div class="news-date">
+          Fall 2026
         </div>
+
+        <p>
+
+          Started the Ph.D. program in
+          Aerospace Engineering and Mechanics
+          at the University of Minnesota,
+          Twin Cities.
+
+        </p>
+
       </div>
+
+
+
+      <div class="news-item">
+
+        <div class="news-date">
+          2026
+        </div>
+
+        <p>
+
+          Conference paper on adaptive
+          access control for IEEE 802.11ax
+          UORA accepted at KICS as a poster.
+
+        </p>
+
+      </div>
+
+
+
+      <div class="news-item">
+
+        <div class="news-date">
+          Feb. 2026
+        </div>
+
+        <p>
+
+          Received B.S. in Information and
+          Communication Engineering from
+          Dongguk University.
+
+        </p>
+
+      </div>
+
+
+
+      <div class="news-item">
+
+        <div class="news-date">
+          Aug. 2025
+        </div>
+
+        <p>
+
+          First-author journal paper published in
+          IEEE Transactions on Intelligent
+          Transportation Systems.
+
+        </p>
+
+      </div>
+
+
+
+      <div
+        class="todo"
+        style="margin-top: 14px"
+      >
+
+        <strong>
+          ADD LATER: New milestones
+        </strong>
+
+        New papers,
+        conference presentations,
+        awards,
+        internships,
+        or research milestones go here.
+
+      </div>
+
     </div>
-  </section>
 
-  <!-- RESEARCH EXPERIENCE MOST RECENT FIRST -->
-  <section id="research">
-    <div class="section-layout">
-      <div>
-        <h2>Research Experience</h2>
-        <p class="side-note">Most recent first.</p>
-      </div>
+  </div>
 
-      <div class="research-list">
+</section>
 
-        <article class="research">
-          <div class="rdate">Sep. 2025 – Feb. 2026</div>
-          <div>
-            <h3>UORA Scheduling in IEEE 802.11ax Networks</h3>
-            <p>
-              Conducted research on uplink OFDMA random access scheduling and developed a MATLAB-based simulator.
-              This work resulted in a first-author KICS 2026 conference paper.
-            </p>
-            <p class="meta">Advisor: Prof. Eunchan Park · Dongguk University</p>
-          </div>
-        </article>
 
-        <article class="research">
-          <div class="rdate">Sep. 2022 – Mar. 2025</div>
-          <div>
-            <h3>UAV–UGV Cooperative Load Balancing for Parcel Pickup</h3>
-            <p>
-              Designed and analyzed a cooperative UAV–UGV scheduling algorithm for parcel pickup,
-              focusing on optimization, load balancing, and path planning.
-            </p>
-            <p class="meta">First-author IEEE T-ITS paper · Advisor: Prof. Kisong Lee</p>
-          </div>
-        </article>
 
-        <article class="research">
-          <div class="rdate">Mar. 2024 – Dec. 2024</div>
-          <div>
-            <h3>Rotor Dynamics Modeling using SMC-PIDC Control</h3>
-            <p>
-              Implemented rotor dynamics with SMC-PIDC control in Simulink and prepared a progress report.
-            </p>
-            <p class="meta">Advisor: Prof. Jaehoon Lee · Dongguk University</p>
-          </div>
-        </article>
+<!-- =========================
+     PUBLICATIONS
+========================= -->
 
-        <article class="research">
-          <div class="rdate">Sep. 2023 – Dec. 2023</div>
-          <div>
-            <h3>AI-based Independent Study</h3>
-            <p>
-              Explored AI methods and produced technical reports through an independent study.
-            </p>
-            <p class="meta">Advisor: Prof. Minjoong Lim · Dongguk University</p>
-          </div>
-        </article>
+<section id="publications">
 
-      </div>
+  <div class="section-layout">
+
+    <div>
+
+      <h2>
+        Publications
+      </h2>
+
+      <p class="side-note">
+        Newest first.
+      </p>
+
     </div>
-  </section>
 
-  <!-- EXPERIENCE / EDUCATION -->
-  <section id="experience">
-    <div class="section-layout">
-      <div>
-        <h2>Education & Teaching</h2>
-        <p class="side-note">Newest first.</p>
-      </div>
 
-      <div class="timeline">
-        <div class="timeline-row">
-          <div class="date">Fall 2026 – Present</div>
-          <div>
-            <h3>Ph.D. Student · University of Minnesota, Twin Cities</h3>
-            <p>Aerospace Engineering and Mechanics</p>
-          </div>
-        </div>
 
-        <div class="timeline-row">
-          <div class="date">Mar. 2021 – Feb. 2026</div>
-          <div>
-            <h3>B.S. · Dongguk University</h3>
-            <p>Information and Communication Engineering · Degree conferred Feb. 2026</p>
-          </div>
-        </div>
+    <div>
 
-        <div class="timeline-row">
-          <div class="date">2023 – 2024</div>
-          <div>
-            <h3>Teaching Assistant · Dongguk University</h3>
-            <p>
-              Microprocessors, Intro to Programming for ICT, AI Programming,
-              and Information & Communication Mathematics.
-            </p>
-          </div>
-        </div>
 
-        <div class="todo">
-          <strong>ADD LATER: UMN TA / RA appointment</strong>
-          Add your current teaching or research appointment here if you want it public.
-        </div>
-      </div>
-    </div>
-  </section>
+      <!-- 2026 KICS -->
 
-  <!-- AWARDS -->
-  <section id="awards">
-    <div class="section-layout">
-      <div>
-        <h2>Awards</h2>
-        <p class="side-note">Selected scholarships.</p>
-      </div>
+      <article class="pub">
 
-      <div class="award-grid">
-        <div class="award">
-          <strong>Dongguk University Merit-based Scholarships</strong>
-          <span>2022–2023</span>
-        </div>
+        <span class="tag">
+          CONFERENCE · 2026
+        </span>
 
-        <div class="award">
-          <strong>Samsung Software Talent Development Scholarship</strong>
-          <span>2022</span>
-        </div>
+        <h3>
 
-        <div class="todo">
-          <strong>ADD LATER: New awards</strong>
-          Fellowships, travel grants, best paper/poster awards, or new scholarships.
-        </div>
-      </div>
-    </div>
-  </section>
+          Adaptive Access Control for
+          IEEE 802.11ax UORA Based on
+          Per-Station Transmission History
 
-  <!-- SKILLS -->
-  <section id="skills">
-    <div class="section-layout">
-      <div>
-        <h2>Technical Skills</h2>
-        <p class="side-note">Current toolkit.</p>
-      </div>
+        </h3>
 
-      <div class="skills">
-        <div class="skillbox">
-          <strong>Programming</strong>
-          <div class="pills">
-            <span class="pill">MATLAB</span>
-            <span class="pill">Python</span>
-            <span class="pill">C/C++</span>
-          </div>
-        </div>
+        <p>
 
-        <div class="skillbox">
-          <strong>Tools</strong>
-          <div class="pills">
-            <span class="pill">Simulink</span>
-            <span class="pill">CVX</span>
-            <span class="pill">MOSEK</span>
-          </div>
-        </div>
+          <strong>
+            S. Yoon
+          </strong>,
 
-        <div class="skillbox">
-          <strong>Languages</strong>
-          <div class="pills">
-            <span class="pill">Korean · Native</span>
-            <span class="pill">English</span>
-          </div>
-        </div>
+          E.-C. Park
 
-        <div class="todo">
-          <strong>ADD LATER: New tools / frameworks</strong>
-          Robotics, optimization, ML, simulation, or programming tools you pick up during the Ph.D.
-        </div>
-      </div>
-    </div>
-  </section>
+        </p>
 
-  <!-- CV -->
-  <section id="cv">
-    <div class="section-layout">
-      <div>
-        <h2>CV</h2>
-        <p class="side-note">Keep one current PDF.</p>
-      </div>
+        <p class="venue">
+
+          Proceedings of the Korean Institute
+          of Communications and Information
+          Sciences (KICS), 2026 · Poster
+
+        </p>
+
+        <a
+          class="paper-link"
+          href="https://d2j16w31g89z0j.cloudfront.net/site/2026w/abs/0859-ILIDT.pdf"
+          target="_blank"
+          rel="noopener"
+        >
+          [Paper]
+        </a>
+
+      </article>
+
+
+
+      <!-- 2025 IEEE T-ITS -->
+
+      <article class="pub">
+
+        <span class="tag">
+          JOURNAL · 2025
+        </span>
+
+        <h3>
+
+          Optimal Load Balancing of
+          Cooperative UAV-UGV Parcel Pickup
+          to Minimize Completion Time
+
+        </h3>
+
+        <p>
+
+          <strong>
+            S. Yoon
+          </strong>,
+
+          K. Lee
+
+        </p>
+
+        <p class="venue">
+
+          IEEE Transactions on Intelligent
+          Transportation Systems,
+
+          vol. 26,
+          no. 8,
+          pp. 12712–12718,
+          Aug. 2025
+
+        </p>
+
+        <a
+          class="paper-link"
+          href="https://doi.org/10.1109/TITS.2025.3582942"
+          target="_blank"
+          rel="noopener"
+        >
+          [Paper]
+        </a>
+
+      </article>
+
+
 
       <div class="todo">
-        <strong>ADD HERE: Updated CV PDF</strong>
-        Upload a file named <code>cv.pdf</code> to the same GitHub repository.
-        Then link a CV button to <code>cv.pdf</code>.
-      </div>
-    </div>
-  </section>
 
-  <!-- CONTACT -->
-  <section id="contact">
-    <div class="contact-card">
-      <div>
-        <h3>Contact</h3>
-        <p>Research, collaboration, or academic inquiries.</p>
+        <strong>
+          ADD LATER: New publications
+        </strong>
+
+        Add new publications above the
+        older papers so this section
+        stays in reverse chronological order.
+
+        <br>
+
+        Use only one official
+        [Paper] link for each publication.
+
       </div>
 
-      <div class="contact-links">
-        <a href="mailto:yoon0279@umn.edu">yoon0279@umn.edu</a>
-        <a href="https://github.com/yoonsoobinie" target="_blank" rel="noopener">GitHub</a>
-        <span class="todo-inline">ADD: Google Scholar</span>
-        <span class="todo-inline">OPTIONAL: LinkedIn</span>
-      </div>
+
     </div>
-  </section>
+
+  </div>
+
+</section>
+
+
+
+<!-- =========================
+     RESEARCH EXPERIENCE
+========================= -->
+
+<section id="research">
+
+  <div class="section-layout">
+
+    <div>
+
+      <h2>
+        Research Experience
+      </h2>
+
+      <p class="side-note">
+        Selected previous research.
+      </p>
+
+    </div>
+
+
+
+    <div class="research-list">
+
+
+      <article class="research">
+
+        <div class="rdate">
+          Sep. 2025 – Feb. 2026
+        </div>
+
+        <div>
+
+          <h3>
+            UORA Scheduling in
+            IEEE 802.11ax Networks
+          </h3>
+
+          <p>
+
+            Conducted research on uplink OFDMA
+            random access scheduling and developed
+            a MATLAB-based simulator.
+
+            This work resulted in a first-author
+            KICS 2026 conference paper.
+
+          </p>
+
+          <p class="meta">
+            Advisor: Prof. Eunchan Park ·
+            Dongguk University
+          </p>
+
+        </div>
+
+      </article>
+
+
+
+      <article class="research">
+
+        <div class="rdate">
+          Sep. 2022 – Mar. 2025
+        </div>
+
+        <div>
+
+          <h3>
+
+            UAV–UGV Cooperative Load Balancing
+            for Parcel Pickup
+
+          </h3>
+
+          <p>
+
+            Designed and analyzed a cooperative
+            UAV–UGV scheduling algorithm for
+            parcel pickup, focusing on optimization,
+            load balancing, and path planning.
+
+          </p>
+
+          <p class="meta">
+
+            First-author IEEE T-ITS paper ·
+            Advisor: Prof. Kisong Lee
+
+          </p>
+
+        </div>
+
+      </article>
+
+
+
+      <article class="research">
+
+        <div class="rdate">
+          Mar. 2024 – Dec. 2024
+        </div>
+
+        <div>
+
+          <h3>
+
+            Rotor Dynamics Modeling
+            using SMC-PIDC Control
+
+          </h3>
+
+          <p>
+
+            Implemented rotor dynamics with
+            SMC-PIDC control in Simulink and
+            prepared a progress report.
+
+          </p>
+
+          <p class="meta">
+
+            Advisor:
+            Prof. Jaehoon Lee ·
+            Dongguk University
+
+          </p>
+
+        </div>
+
+      </article>
+
+
+
+      <article class="research">
+
+        <div class="rdate">
+          Sep. 2023 – Dec. 2023
+        </div>
+
+        <div>
+
+          <h3>
+            AI-based Independent Study
+          </h3>
+
+          <p>
+
+            Explored AI methods and produced
+            technical reports through an
+            independent study.
+
+          </p>
+
+          <p class="meta">
+
+            Advisor:
+            Prof. Minjoong Lim ·
+            Dongguk University
+
+          </p>
+
+        </div>
+
+      </article>
+
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- =========================
+     EDUCATION & TEACHING
+========================= -->
+
+<section id="experience">
+
+  <div class="section-layout">
+
+    <div>
+
+      <h2>
+        Education & Teaching
+      </h2>
+
+      <p class="side-note">
+        Academic background.
+      </p>
+
+    </div>
+
+
+
+    <div class="timeline">
+
+
+      <div class="timeline-row">
+
+        <div class="date">
+          Fall 2026 – Present
+        </div>
+
+        <div>
+
+          <h3>
+            Ph.D. Student ·
+            University of Minnesota,
+            Twin Cities
+          </h3>
+
+          <p>
+            Aerospace Engineering and Mechanics
+          </p>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="timeline-row">
+
+        <div class="date">
+          Mar. 2021 – Feb. 2026
+        </div>
+
+        <div>
+
+          <h3>
+            B.S. · Dongguk University
+          </h3>
+
+          <p>
+
+            Information and Communication
+            Engineering ·
+            Degree conferred Feb. 2026
+
+          </p>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="timeline-row">
+
+        <div class="date">
+          2023 – 2024
+        </div>
+
+        <div>
+
+          <h3>
+            Teaching Assistant ·
+            Dongguk University
+          </h3>
+
+          <p>
+
+            Microprocessors,
+            Intro to Programming for ICT,
+            AI Programming,
+            and Information &
+            Communication Mathematics.
+
+          </p>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="todo">
+
+        <strong>
+          ADD LATER: UMN TA / RA appointment
+        </strong>
+
+        Add your current teaching
+        or research appointment here
+        if you want it public.
+
+      </div>
+
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- =========================
+     AWARDS
+========================= -->
+
+<section id="awards">
+
+  <div class="section-layout">
+
+    <div>
+
+      <h2>
+        Awards
+      </h2>
+
+      <p class="side-note">
+        Selected scholarships.
+      </p>
+
+    </div>
+
+
+
+    <div class="award-grid">
+
+
+      <div class="award">
+
+        <strong>
+          Dongguk University
+          Merit-based Scholarships
+        </strong>
+
+        <span>
+          2022–2023
+        </span>
+
+      </div>
+
+
+
+      <div class="award">
+
+        <strong>
+          Samsung Software Talent
+          Development Scholarship
+        </strong>
+
+        <span>
+          2022
+        </span>
+
+      </div>
+
+
+
+      <div class="todo">
+
+        <strong>
+          ADD LATER: New awards
+        </strong>
+
+        Fellowships,
+        travel grants,
+        best paper/poster awards,
+        or new scholarships.
+
+      </div>
+
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- =========================
+     TECHNICAL SKILLS
+========================= -->
+
+<section id="skills">
+
+  <div class="section-layout">
+
+    <div>
+
+      <h2>
+        Technical Skills
+      </h2>
+
+      <p class="side-note">
+        Research toolkit.
+      </p>
+
+    </div>
+
+
+
+    <div class="skills">
+
+
+      <div class="skillbox">
+
+        <strong>
+          Programming
+        </strong>
+
+        <div class="pills">
+
+          <span class="pill">
+            MATLAB
+          </span>
+
+          <span class="pill">
+            Python
+          </span>
+
+          <span class="pill">
+            C/C++
+          </span>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="skillbox">
+
+        <strong>
+          Tools
+        </strong>
+
+        <div class="pills">
+
+          <span class="pill">
+            Simulink
+          </span>
+
+          <span class="pill">
+            CVX
+          </span>
+
+          <span class="pill">
+            MOSEK
+          </span>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="skillbox">
+
+        <strong>
+          Languages
+        </strong>
+
+        <div class="pills">
+
+          <span class="pill">
+            Korean · Native
+          </span>
+
+          <span class="pill">
+            English
+          </span>
+
+        </div>
+
+      </div>
+
+
+
+      <div class="todo">
+
+        <strong>
+          ADD LATER: New tools / frameworks
+        </strong>
+
+        Add robotics,
+        optimization,
+        machine learning,
+        simulation,
+        or programming tools
+        used during the Ph.D.
+
+      </div>
+
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- =========================
+     CV
+========================= -->
+
+<section id="cv">
+
+  <div class="section-layout">
+
+    <div>
+
+      <h2>
+        CV
+      </h2>
+
+      <p class="side-note">
+        Curriculum Vitae.
+      </p>
+
+    </div>
+
+
+
+    <div class="todo">
+
+      <strong>
+        ADD HERE: Updated CV
+      </strong>
+
+      Upload your final CV to GitHub
+      with the filename
+
+      <code>
+        cv.pdf
+      </code>
+
+      and add a CV button here.
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- =========================
+     CONTACT
+========================= -->
+
+<section id="contact">
+
+  <div class="contact-card">
+
+    <div>
+
+      <h3>
+        Contact
+      </h3>
+
+      <p>
+        Research, collaboration,
+        or academic inquiries.
+      </p>
+
+    </div>
+
+
+
+    <div class="contact-links">
+
+
+      <a
+        href="mailto:yoon0279@umn.edu"
+      >
+        yoon0279@umn.edu
+      </a>
+
+
+      <a
+        href="https://github.com/yoonsoobinie"
+        target="_blank"
+        rel="noopener"
+      >
+        GitHub
+      </a>
+
+
+      <span class="todo-inline">
+        ADD: Google Scholar
+      </span>
+
+
+      <span class="todo-inline">
+        OPTIONAL: LinkedIn
+      </span>
+
+
+    </div>
+
+  </div>
+
+</section>
+
 
 </main>
 
+
+
 <footer>
-  <div class="wrap">© 2026 Soobin Yoon · Hosted on GitHub Pages</div>
+
+  <div class="wrap">
+
+    © 2026 Soobin Yoon ·
+    Hosted on GitHub Pages
+
+  </div>
+
 </footer>
+
+
 </body>
 </html>
-'''
-
-guide = """# Soobin Yoon Homepage — Latest-First Version
-
-## Recommended order
-1. Current identity
-2. Current Ph.D. Research
-3. News
-4. Publications (2026 → 2025 → ...)
-5. Research Experience (most recent first)
-6. Education & Teaching
-7. Awards
-8. Technical Skills
-9. CV
-10. Contact
-
-## How to replace the current GitHub page
-
-Your repository:
-`yoonsoobinie/yoonsoobinie.github.io`
-
-1. Open the repository.
-2. Make sure the homepage file is named exactly `index.html`.
-3. Replace the current `index.html` with the new one from this folder.
-4. Commit changes.
-5. GitHub Pages should update automatically after a short delay.
-
-If the uploaded file gets renamed to something like:
-`index(20260906-xxxxxx).html`
-
-rename it back to:
-`index.html`
-
-## Placeholders included on purpose
-
-Search the HTML for:
-- `ADD HERE`
-- `ADD LATER`
-
-Main additions:
-- Profile photo
-- UMN advisor / lab
-- Current UMN project
-- New milestones
-- Paper / DOI / project links
-- New publications
-- UMN TA / RA appointment
-- New awards
-- New technical tools
-- Updated CV PDF
-- Google Scholar
-- Optional LinkedIn
-"""
-
-(outdir / "index.html").write_text(html, encoding="utf-8")
-(outdir / "EDITING_GUIDE.md").write_text(guide, encoding="utf-8")
-
-zip_path = Path("/mnt/data/soobin-homepage-latest-first.zip")
-with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as z:
-    for f in outdir.rglob("*"):
-        if f.is_file():
-            z.write(f, f.relative_to(outdir))
-
-print(outdir / "index.html")
-print(zip_path)
